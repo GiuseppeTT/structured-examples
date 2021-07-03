@@ -1,6 +1,6 @@
 ---
-title: Cool project name
-author: Cool author name
+title: Diamond analysis
+author: Giuseppe Tinti Tomio
 output: html_document
 ---
 
@@ -13,6 +13,7 @@ knitr::opts_chunk$set(
 
 # Load packages ----------------------------------------------------------------
 library(tidyverse)
+library(gt)
 
 
 # Source auxiliary R files -----------------------------------------------------
@@ -21,7 +22,39 @@ source("R/functions.R")
 
 # Analysis
 
-## Part 1
-```{r part-1}
-1 + 1
+```{r data, message=FALSE}
+data <- read_csv("data/diamonds.csv")
+```
+
+Some price metrics
+
+```{r table}
+data %>%
+    summarise(
+        Minimum = min(price),
+        Mean = mean(price),
+        Maximum = max(price),
+        `Standard Deviation` = sd(price)
+    ) %>%
+    pivot_longer(everything(), names_to = "Metric", values_to = "Value") %>%
+    gt() %>%
+    fmt_number(Value, decimals = 0, pattern = "${x}")
+```
+
+and a pretty plot
+
+```{r plot}
+data %>%
+    ggplot(aes(x = carat, y = price)) +
+    geom_point(alpha = 0.1) +
+    scale_x_log10() +
+    scale_y_log10()
+```
+
+with a cool model
+
+```{r model}
+data %>%
+    lm(log(price) ~ log(carat), data = .)  %>%
+    summary()
 ```
