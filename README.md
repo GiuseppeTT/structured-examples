@@ -1,3 +1,3 @@
 # structured-examples
 
-This repository is a list of R Project examples using [`{structured}`](https://giuseppett.github.io/structured/) templates.
+This repository contains example of R projects built with [`{structured}`](https://giuseppett.github.io/structured/).
